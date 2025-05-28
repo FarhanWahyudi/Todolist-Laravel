@@ -15,7 +15,7 @@
         @if (isset($error))
         <div class="row">
             <div class="alert alert-danger" role="alert">
-                {{error}}
+                {{$error}}
             </div>
         </div>
         @endif
@@ -35,6 +35,7 @@
             <div class="col-md-10 mx-auto col-lg-5">
                 <form class="p-4 p-md-5 border rounded-3 bg-light" method="post" action="/todolist">
                     <div class="form-floating mb-3">
+                        @csrf
                         <input type="text" class="form-control" name="todo" placeholder="todo">
                         <label for="todo">Todo</label>
                     </div>
@@ -62,7 +63,10 @@
                         <th scope="row">{{$todo['id']}}</th>
                         <td>{{$todo['todo']}}</td>
                         <td>
-                            <button class="w-100 btn btn-lg btn-danger" type="submit">Remove</button>
+                            <form method="post" action="/todolist/{{$todo['id']}}/delete">
+                                @csrf
+                                <button class="w-100 btn btn-lg btn-danger" type="submit">Remove</button>
+                            </form>
                         </td>
                     </tr>
                     @endforeach

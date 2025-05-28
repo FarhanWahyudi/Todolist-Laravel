@@ -18,20 +18,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/template', function () {
-    return view('template');
-});
-
 Route::get('/', [HomeController::class, 'home']);
 
-Route::controller(TodolistController::class)->group(function () {
-    Route::get('/todolist', 'todolist');
-    Route::post('/todolist', 'addTodo');
-    Route::get('/todolist/{id}/delete', 'removeTodo');
+Route::controller(TodolistController::class)
+    ->middleware(OnlyMemberMiddleware::class)->group(function () {
+        Route::get('/todolist', 'todolist');
+        Route::post('/todolist', 'addTodo');
+        Route::post('/todolist/{todoId}/delete', 'removeTodo');
 });
 
 Route::controller(UserController::class)->group(function () {
     Route::get('/login', 'login')->middleware(OnlyGuestMiddleware::class);
     Route::post('/login', 'doLogin')->middleware(OnlyGuestMiddleware::class);
-    Route::get('/logout', 'doLogout')->middleware(OnlyMemberMiddleware::class);
+    Route::post('/logout', 'doLogout')->middleware(OnlyMemberMiddleware::class);
 });
